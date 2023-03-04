@@ -6,7 +6,40 @@
 .cell{
     background-image: url(SaperSprite.png);
     width: 16px;
-    height: 17px;
-    background-position: 0 -50px;
+    height: 16px;
+    background-position: 0 -52px;
     background-repeat: no-repeat;
+}
+
+.numberOne{
+    background-position: 0 -68px;
+}
+.numberTwo{
+    background-position: -17px -68px;
+}
+.numberTree{
+    background-position: -34px -68px;
+}
+.numberFour{
+    background-position: -51px -68px;
+}
+.numberFive{
+    background-position: -68px -68px;
+}
+.numberSix{
+    background-position: -85px -68px;
+}
+.numberSeven{
+    background-position: -102px -68px;
+}
+.numberEight{
+    background-position: -119px -68px;
+}
+
+.emptyCell{
+    background-position: -17px -52px;
+}
+
+.pressBomb{
+    background-position: -102px -52px;
 }
