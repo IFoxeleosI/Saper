@@ -2,14 +2,39 @@
     display: flex;
     width: 270px;
     flex-wrap: wrap;
+    margin: 0 auto;
 }
+
 .cell{
     background-image: url(SaperSprite.png);
     width: 16px;
     height: 16px;
     background-position: 0 -52px;
     background-repeat: no-repeat;
+    
 }
+
+.button{
+    background-image: url(SaperSprite.png);
+    width: 26px;
+    height: 26px;
+    background-repeat: no-repeat;
+    background-position: -1px -25px;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.buttonPressed{
+    background-position: -28px -25px;
+}
+.buttonLose{
+    background-position: -109px -25px;
+}
+.buttonScared{
+    background-position: -55px -25px;
+}
+
 
 .numberOne{
     background-position: 0 -68px;
@@ -42,4 +67,17 @@
 
 .pressBomb{
     background-position: -102px -52px;
+}
+
+.openBomb{
+    background-position: -85px -52px;
+}
+.putFlag{
+    background-position: -35px -52px;
+}
+.detectedBomb{
+    background-position: -120px -52px;
+}
+.questionMark{
+    background-position: -52px -52px;
 }

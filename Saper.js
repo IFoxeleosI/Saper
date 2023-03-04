@@ -1,9 +1,11 @@
 document.body.onload = addElement;
 let board = document.getElementById('gameBoard');
+let buttomSmile = document.getElementById('button');
 let nombersArroundsBomb = {};
 let coordinatesElements = [];
 let coordinatesNumber = [];
 let isEndGame = false;
+let isInitialClick = true;
 
 let numberLibrary = {
     1: 'numberOne',
@@ -22,22 +24,77 @@ function addElement(){ // Генерация ячеек поля
         newElement.id = "cell-" + i;
         newElement.classList.add("cell");
         newElement.addEventListener("click", function(cell){
+        
+        if (isInitialClick){
+            isInitialClick = false
+            spawnBomb(cell.target)
+        }
+
+            if(isEndGame == true)return
             clickCell(cell.target)
         })
+        newElement.addEventListener("mousedown", function(smile){
+            buttomSmile.classList.add("buttonScared");
+        })
+        newElement.addEventListener("mouseup", function(smile){
+            buttomSmile.classList.remove("buttonScared");
+        })
+        
+        newElement.addEventListener("contextmenu", function(flag){
+            flag.preventDefault();
+
+            if(newElement.classList.contains("putFlag")){
+                newElement.classList.remove("putFlag");
+                newElement.classList.add("questionMark");
+
+            }else if(newElement.classList.contains("questionMark")){
+                newElement.classList.remove("questionMark");
+                newElement.classList.add("cell");
+
+            }else{
+                newElement.classList.add("putFlag");
+            } 
+            
+        })
+
+        // if(newElement.classList.contains("putFlag")){
+        //     newElement.addEventListener("contextmenu", function(flag){
+        //         console.loge("123")
+        //         newElement.classList.add("questionMark");
+        //     })
+        // }
+
         board.appendChild(newElement);
     }
-    spawnBomb()
+    
+
 }
 
-function clickCell(cell){
-    //console.log(cell);
+function clickCell(cell){ // Отображение инф. клеток после нажатия
+
     if(cell.classList.contains("Active"))return
     let currentCoordinate = cell.dataset.x + ',' + cell.dataset.y
     console.log(nombersArroundsBomb[currentCoordinate]);
 
+
     if( cell.dataset.bomb == "hereBomb"){
+
+        isEndGame = true
         cell.classList.add("pressBomb");
-        
+        buttomSmile.classList.add("buttonLose")
+
+        for( let i=0; i < document.querySelectorAll(".cell").length; i++){
+            let currentBomb = document.getElementById("cell-" + i)
+
+            if(currentBomb.classList.contains("putFlag")){
+                currentBomb.classList.add('detectedBomb');
+            }
+            else if(currentBomb.dataset.bomb == "hereBomb" && cell != currentBomb){
+                currentBomb.classList.add("openBomb");
+            }
+            
+        }
+
         return  
     }
     else if(nombersArroundsBomb[currentCoordinate] != undefined){
@@ -46,6 +103,7 @@ function clickCell(cell){
         cell.classList.add(number);
         return
     }
+    
     else{
         cell.classList.add("Active")
         cell.classList.add("emptyCell");
@@ -91,7 +149,7 @@ function checkCell(cell){ // Проверяет рядом стоящие яче
     }
 }
 
-function spawnBomb(){ // Логика появления бомб
+function spawnBomb(cell){ // Логика появления бомб
     let x = 0
     let y = 0
     let quantityBomb = 40;
@@ -107,10 +165,10 @@ function spawnBomb(){ // Логика появления бомб
 // Рандомно раскидывает бомбы
         let hereBomb = Math.random() < 0.2;
 
-        if (hereBomb == true && quantityBomb > 0){
+        if (cell != document.getElementById("cell-" + i) && hereBomb == true && quantityBomb > 0){
             document.getElementById("cell-" + i).dataset.bomb = "hereBomb";
             quantityBomb--
-            console.log(document.getElementById("cell-" + i).dataset.bomb = )
+            
 
             //Записывает координаты где есть цифры 
             if (x > 0 && y > 0)coordinatesNumber.push(`${x-1},${y-1}`);
@@ -140,6 +198,13 @@ function spawnBomb(){ // Логика появления бомб
             return
         }
         nombersArroundsBomb[cell] = 1
-    })
-        
+    })   
 }
+
+//Главная кнопка
+buttomSmile.addEventListener("mousedown", function(cell){
+    buttomSmile.classList.add("buttonPressed");
+})
+buttomSmile.addEventListener("mouseup", function(cell){
+    buttomSmile.classList.remove("buttonPressed");
+})
