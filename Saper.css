@@ -1,0 +1,12 @@
+#gameBoard{
+    display: flex;
+    width: 270px;
+    flex-wrap: wrap;
+}
+.cell{
+    background-image: url(SaperSprite.png);
+    width: 16px;
+    height: 17px;
+    background-position: 0 -50px;
+    background-repeat: no-repeat;
+}
