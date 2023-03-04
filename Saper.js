@@ -7,6 +7,21 @@ let coordinatesNumber = [];
 let isEndGame = false;
 let isInitialClick = true;
 
+function clear(){
+    nombersArroundsBomb = {};
+    coordinatesElements = [];
+    coordinatesNumber = [];
+    isEndGame = false;
+    isInitialClick = true;
+
+    buttomSmile.classList = "button"
+
+    for( let i=0; i < 256; i++){
+        document.querySelector(".cell").remove()
+    }
+    addElement()
+}
+
 let numberLibrary = {
     1: 'numberOne',
     2: 'numberTwo',
@@ -55,15 +70,7 @@ function addElement(){ // Генерация ячеек поля
                 newElement.classList.add("putFlag");
             } 
             
-        })
-
-        // if(newElement.classList.contains("putFlag")){
-        //     newElement.addEventListener("contextmenu", function(flag){
-        //         console.loge("123")
-        //         newElement.classList.add("questionMark");
-        //     })
-        // }
-
+        })   
         board.appendChild(newElement);
     }
     
@@ -207,4 +214,7 @@ buttomSmile.addEventListener("mousedown", function(cell){
 })
 buttomSmile.addEventListener("mouseup", function(cell){
     buttomSmile.classList.remove("buttonPressed");
+})
+buttomSmile.addEventListener('click', function(remove){
+    clear();
 })
