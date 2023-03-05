@@ -1,3 +1,4 @@
+"use strict";
 document.body.onload = addElement;
 let board = document.getElementById('gameBoard');
 let buttomSmile = document.getElementById('button');
@@ -33,19 +34,26 @@ let numberLibrary = {
     8: 'numberEight'
 }
 
+function victory(){
+    if(document.querySelectorAll(".Active").length >= 255){
+        buttomSmile.classList.add("buttonWin");
+        isEndGame = true;
+    }
+}
+
 function addElement(){ // Генерация ячеек поля
     for (let i = 0; i < 256; i++){
         let newElement = document.createElement("div");
         newElement.id = "cell-" + i;
         newElement.classList.add("cell");
+
         newElement.addEventListener("click", function(cell){
         
         if (isInitialClick){
             isInitialClick = false
             spawnBomb(cell.target)
         }
-
-            if(isEndGame == true)return
+        if(isEndGame == true)return
             clickCell(cell.target)
         })
         newElement.addEventListener("mousedown", function(smile){
@@ -57,7 +65,9 @@ function addElement(){ // Генерация ячеек поля
         
         newElement.addEventListener("contextmenu", function(flag){
             flag.preventDefault();
-
+            
+        if(isEndGame == true)return
+        
             if(newElement.classList.contains("putFlag")){
                 newElement.classList.remove("putFlag");
                 newElement.classList.add("questionMark");
@@ -99,15 +109,15 @@ function clickCell(cell){ // Отображение инф. клеток пос�
             else if(currentBomb.dataset.bomb == "hereBomb" && cell != currentBomb){
                 currentBomb.classList.add("openBomb");
             }
-            
-        }
-
-        return  
+        }return  
     }
     else if(nombersArroundsBomb[currentCoordinate] != undefined){
         let number = numberLibrary[nombersArroundsBomb[currentCoordinate]];
         cell.classList.add("Active")
         cell.classList.add(number);
+        setTimeout (function(){
+            victory();
+        }, 100)
         return
     }
     
@@ -122,38 +132,40 @@ function checkCell(cell){ // Проверяет рядом стоящие яче
     let x = +cell.dataset.x
     let y = +cell.dataset.y
 
-    if(x>0){
-        let newCell = document.querySelector(`[data-x="${x-1}"][data-y="${y}"]`)
-        clickCell(newCell);
-    }
-    if(x<15){
-        let newCell = document.querySelector(`[data-x="${x+1}"][data-y="${y}"]`)
-        clickCell(newCell); 
-    }
-    if(y>0){
-        let newCell = document.querySelector(`[data-x="${x}"][data-y="${y-1}"]`)
-        clickCell(newCell);
-    }
-    if(y<15){
-        let newCell = document.querySelector(`[data-x="${x}"][data-y="${y+1}"]`)
-        clickCell(newCell);
-    }
-    if(x>0 && y>0){
-        let newCell = document.querySelector(`[data-x="${x-1}"][data-y="${y-1}"]`)
-        clickCell(newCell);
-    }
-    if(x<15 && y>0){
-        let newCell = document.querySelector(`[data-x="${x+1}"][data-y="${y-1}"]`)
-        clickCell(newCell);
-    }
-    if(x>0 && y<15){
-        let newCell = document.querySelector(`[data-x="${x-1}"][data-y="${y+1}"]`)
-        clickCell(newCell);
-    }
-    if(x<15 && y<15){
-        let newCell = document.querySelector(`[data-x="${x+1}"][data-y="${y+1}"]`)
-        clickCell(newCell);
-    }
+    setTimeout(function(){
+        if(x>0){
+            let newCell = document.querySelector(`[data-x="${x-1}"][data-y="${y}"]`)
+            clickCell(newCell);
+        }
+        if(x<15){
+            let newCell = document.querySelector(`[data-x="${x+1}"][data-y="${y}"]`)
+            clickCell(newCell); 
+        }
+        if(y>0){
+            let newCell = document.querySelector(`[data-x="${x}"][data-y="${y-1}"]`)
+            clickCell(newCell);
+        }
+        if(y<15){
+            let newCell = document.querySelector(`[data-x="${x}"][data-y="${y+1}"]`)
+            clickCell(newCell);
+        }
+        if(x>0 && y>0){
+            let newCell = document.querySelector(`[data-x="${x-1}"][data-y="${y-1}"]`)
+            clickCell(newCell);
+        }
+        if(x<15 && y>0){
+            let newCell = document.querySelector(`[data-x="${x+1}"][data-y="${y-1}"]`)
+            clickCell(newCell);
+        }
+        if(x>0 && y<15){
+            let newCell = document.querySelector(`[data-x="${x-1}"][data-y="${y+1}"]`)
+            clickCell(newCell);
+        }
+        if(x<15 && y<15){
+            let newCell = document.querySelector(`[data-x="${x+1}"][data-y="${y+1}"]`)
+            clickCell(newCell);
+        } 
+    }, 10)
 }
 
 function spawnBomb(cell){ // Логика появления бомб
@@ -199,12 +211,12 @@ function spawnBomb(cell){ // Логика появления бомб
     }
 
 // Показывает сколько бомб есть вокруг клетки
-    coordinatesNumber.forEach(function(cell){
-        if(Object.hasOwn(nombersArroundsBomb,cell)){
-            nombersArroundsBomb[cell]++
+    coordinatesNumber.forEach(function(coords){
+        if(Object.hasOwn(nombersArroundsBomb,coords)){
+            nombersArroundsBomb[coords]++
             return
         }
-        nombersArroundsBomb[cell] = 1
+        nombersArroundsBomb[coords] = 1
     })   
 }
 
