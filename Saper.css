@@ -1,44 +1,26 @@
 #gameBoard{
     display: flex;
-    width: 270px;
     flex-wrap: wrap;
-    margin: 0 auto;
 }
+.main{
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    width: 256px;
+}
+.gameInfo{
+    display: flex;
+    justify-content: space-between;
+}
+
 
 .cell{
     background-image: url(SaperSprite.png);
     width: 16px;
     height: 16px;
     background-position: 0 -52px;
-    background-repeat: no-repeat;
-    
+    background-repeat: no-repeat;  
 }
-
-.button{
-    background-image: url(SaperSprite.png);
-    width: 26px;
-    height: 26px;
-    background-repeat: no-repeat;
-    background-position: -1px -25px;
-    margin: 0 auto;
-    margin-bottom: 10px;
-    display: block;
-}
-
-.buttonPressed{
-    background-position: -28px -25px;
-}
-.buttonLose{
-    background-position: -109px -25px;
-}
-.buttonScared{
-    background-position: -55px -25px;
-}
-.buttonWin{
-    background-position: -82px -25px;
-}
-
-
 
 .numberOne{
     background-position: 0 -68px;
@@ -84,4 +66,66 @@
 }
 .questionMark{
     background-position: -52px -52px;
+}
+
+
+
+.button{
+    background-image: url(SaperSprite.png);
+    width: 26px;
+    height: 26px;
+    background-repeat: no-repeat;
+    background-position: -1px -25px;
+    margin-bottom: 10px;
+    display: block;
+}
+.buttonPressed{
+    background-position: -28px -25px;
+}
+.buttonLose{
+    background-position: -109px -25px;
+}
+.buttonScared{
+    background-position: -55px -25px;
+}
+.buttonWin{
+    background-position: -82px -25px;
+}
+
+
+.scoreboardMeaningZero{
+    background-image: url(SaperSprite.png);
+    width: 13px;
+    height: 23px;
+    background-repeat: no-repeat;
+    background-position: -127px 0;
+    margin-bottom: 10px;
+    display: block;
+}
+.scoreboardMeaningOne{
+    background-position: -1px 0;
+}
+.scoreboardMeaningTwo{
+    background-position: -15px 0;
+}
+.scoreboardMeaningThree{
+    background-position: -29px 0;
+}
+.scoreboardMeaningFour{
+    background-position: -43px 0;
+}
+.scoreboardMeaningFive{
+    background-position: -57px 0;
+}
+.scoreboardMeaningSix{
+    background-position: -71px 0;
+}
+.scoreboardMeaningSeven{
+    background-position: -85px 0;
+}
+.scoreboardMeaningEight{
+    background-position: -99px 0;
+}
+.scoreboardMeaningNine{
+    background-position: -113px 0;
 }

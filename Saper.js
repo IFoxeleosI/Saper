@@ -2,11 +2,78 @@
 document.body.onload = addElement;
 let board = document.getElementById('gameBoard');
 let buttomSmile = document.getElementById('button');
+let scoreboardStopwatch = document.getElementById('scoreboardMeaningZero');
+let taimer = document.getElementById('taimer')
+
 let nombersArroundsBomb = {};
 let coordinatesElements = [];
 let coordinatesNumber = [];
 let isEndGame = false;
 let isInitialClick = true;
+
+let timer
+let sum = 0
+let scoreboardMeaningLibrary = {
+    0: 'scoreboardMeaningZero',
+    1: 'scoreboardMeaningOne',
+    2: 'scoreboardMeaningTwo',
+    3: 'scoreboardMeaningThree',
+    4: 'scoreboardMeaningFour',
+    5: 'scoreboardMeaningFive',
+    6: 'scoreboardMeaningSix',
+    7: 'scoreboardMeaningSeven',
+    8: 'scoreboardMeaningEight',
+    9: 'scoreboardMeaningNine',
+}
+
+
+function renderNumericFields(conter, arrElements){
+    let stringCounter = String(conter)
+    let startConterRender = 0
+    arrElements.forEach((numeritem,index)=>{
+        numeritem.classList.add('scoreboardMeaningZero');
+        numeritem.classList.add('numeric');
+        if(arrElements.length - index <= stringCounter.length){
+            let classPotFix = scoreboardMeaningLibrary[+stringCounter[startConterRender]]
+            numeritem.classList.add(classPotFix)
+            console.log(classPotFix);
+            startConterRender++
+            return
+        }
+
+        numeritem.classList.add('scoreboardMeaningZero')
+    })
+}
+
+function renderscoreboardMeaning(){
+    taimer.querySelectorAll('.numeric').forEach((numeritem) =>{
+        numeritem.remove()
+    })
+
+    let first = document.createElement('div');
+    let second = document.createElement('div');
+    let third = document.createElement('div');
+
+    let arrayCountersElems = [first,second,third];
+
+    renderNumericFields(sum,arrayCountersElems)
+
+    taimer.appendChild(first);
+    taimer.appendChild(second);
+    taimer.appendChild(third); 
+}
+
+function beginningTimer(){
+    timer = setTimeout(function(){
+        beginningTimer()
+        renderscoreboardMeaning();
+        sum++
+        let second = scoreboardMeaningLibrary[sum];
+    }, 1000)
+    console.log("1 sec")
+}
+beginningTimer()
+
 
 function clear(){
     nombersArroundsBomb = {};
@@ -14,7 +81,9 @@ function clear(){
     coordinatesNumber = [];
     isEndGame = false;
     isInitialClick = true;
-
+    sum = 0
+    clearTimeout(timer);
+    beginningTimer()
     buttomSmile.classList = "button"
 
     for( let i=0; i < 256; i++){
@@ -34,10 +103,13 @@ let numberLibrary = {
     8: 'numberEight'
 }
 
+
 function victory(){
     if(document.querySelectorAll(".Active").length >= 255){
         buttomSmile.classList.add("buttonWin");
         isEndGame = true;
+        clearTimeout(timer);
+        
     }
 }
 
@@ -66,8 +138,9 @@ function addElement(){ // Генерация ячеек поля
         newElement.addEventListener("contextmenu", function(flag){
             flag.preventDefault();
             
-        if(isEndGame == true)return
-        
+        if(isEndGame == true || flag.target.classList.contains("emptyCell") )return
+
+
             if(newElement.classList.contains("putFlag")){
                 newElement.classList.remove("putFlag");
                 newElement.classList.add("questionMark");
@@ -82,6 +155,7 @@ function addElement(){ // Генерация ячеек поля
             
         })   
         board.appendChild(newElement);
+        renderscoreboardMeaning();
     }
     
 
@@ -95,7 +169,7 @@ function clickCell(cell){ // Отображение инф. клеток пос�
 
 
     if( cell.dataset.bomb == "hereBomb"){
-
+        clearTimeout(timer);
         isEndGame = true
         cell.classList.add("pressBomb");
         buttomSmile.classList.add("buttonLose")
